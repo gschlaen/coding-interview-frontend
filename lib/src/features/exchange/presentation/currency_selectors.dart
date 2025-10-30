@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../domain/currency.dart';
 import 'currency_dropdown.dart';
 import 'currency_selector_label.dart';
 import 'currency_switch.dart';
@@ -9,6 +10,10 @@ class CurrencySelectors extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO:
+    final fromCurrency = CryptoCurrency.usdt;
+    final toCurrency = FiatCurrency.cop;
+
     return Stack(
       alignment: Alignment.center,
       clipBehavior: Clip.none,
@@ -25,38 +30,8 @@ class CurrencySelectors extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CurrencyDropdown(
-                // TODO: make currencyCode and icon dynamic
-                currencyCode: 'USDT',
-                icon: const CircleAvatar(
-                  radius: 12,
-                  backgroundColor: Color(0xFF50AF95),
-                  child: Text(
-                    'T',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ),
-              CurrencyDropdown(
-                // TODO: make currencyCode and icon dynamic
-                currencyCode: 'VES',
-                icon: const CircleAvatar(
-                  radius: 12,
-                  backgroundColor: Color(0xFF0033A0), // Azul de la bandera VES
-                  child: Text(
-                    'V',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ),
+              CurrencyDropdown(currency: fromCurrency),
+              CurrencyDropdown(currency: toCurrency),
             ],
           ),
         ),

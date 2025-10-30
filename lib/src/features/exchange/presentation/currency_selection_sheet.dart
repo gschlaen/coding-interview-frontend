@@ -1,24 +1,21 @@
+import 'package:el_dorado_exchange/src/features/exchange/domain/currency.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/app_sizes.dart';
 
 class CurrencySelectionSheet extends StatelessWidget {
-  const CurrencySelectionSheet({super.key});
-  // TODO: replace with Model data
-  static const List<Map<String, String>> _mockCurrencies = [
-    {'code': 'VES', 'name': 'Bolívares (Bs)', 'flag': '🇻🇪'},
-    {'code': 'COP', 'name': 'Pesos Colombianos (COL\$)', 'flag': '🇨🇴'},
-    {'code': 'ARS', 'name': 'Pesos Argentinos (ARS\$)', 'flag': '🇦🇷'},
-    {'code': 'PEN', 'name': 'Soles Peruano (S/.)', 'flag': '🇵🇪'},
-    {'code': 'BRL', 'name': 'Real Brasileño (R\$)', 'flag': '🇧🇷'},
-    {'code': 'BOB', 'name': 'Boliviano (R\$)', 'flag': '🇧🇴'},
-  ];
+  const CurrencySelectionSheet({super.key, required this.isFiat});
+
+  final bool isFiat;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final List<Currency> currencies = isFiat
+        ? FiatCurrency.values
+        : CryptoCurrency.values;
     // TODO: make selectedCurrencyCode dynamic
-    const String selectedCurrencyCode = 'VES';
+    const String selectedCurrencyId = 'VES';
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
@@ -34,9 +31,8 @@ class CurrencySelectionSheet extends StatelessWidget {
             ),
           ),
           gapH16,
-          // TODO: update data in Text depending on FIAT or cripto
           Text(
-            'FIAT',
+            isFiat ? 'FIAT' : 'Cripto',
             style: theme.textTheme.titleMedium?.copyWith(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -50,18 +46,16 @@ class CurrencySelectionSheet extends StatelessWidget {
               onChanged: (value) {
                 //  TODO: update selected item
               },
-              groupValue: "",
+              groupValue: selectedCurrencyId,
               child: ListView.separated(
                 separatorBuilder: (context, index) => gapH4,
-                itemCount: _mockCurrencies.length,
+                itemCount: currencies.length,
                 itemBuilder: (context, index) {
-                  final currency = _mockCurrencies[index];
-                  final code = currency['code']!;
-                  final bool isSelected = code == selectedCurrencyCode;
+                  final currency = currencies[index];
+                  final id = currency.id;
+                  final bool isSelected = id == selectedCurrencyId;
                   return _CurrencyItem(
-                    code: code,
-                    flag: currency['flag']!,
-                    name: currency['name']!,
+                    currency: currency,
                     isSelected: isSelected,
                   );
                 },
@@ -75,16 +69,9 @@ class CurrencySelectionSheet extends StatelessWidget {
 }
 
 class _CurrencyItem extends StatelessWidget {
-  const _CurrencyItem({
-    required this.flag,
-    required this.code,
-    required this.name,
-    required this.isSelected,
-  });
-  // TODO: update to use a data model
-  final String flag;
-  final String code;
-  final String name;
+  const _CurrencyItem({required this.currency, required this.isSelected});
+
+  final Currency currency;
   final bool isSelected;
 
   @override
@@ -98,27 +85,27 @@ class _CurrencyItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12.0),
         child: Row(
           children: [
-            Text(flag, style: const TextStyle(fontSize: 28)),
+            Image.asset(currency.iconAsset, width: 26, height: 26),
             const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  code,
-                  style: theme.textTheme.bodyLarge?.copyWith(
+                  currency.name,
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  name,
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  currency.description,
+                  style: theme.textTheme.bodySmall?.copyWith(
                     color: Colors.grey[600],
                   ),
                 ),
               ],
             ),
             const Spacer(),
-            Radio<String>(value: code),
+            Radio<String>(value: currency.id),
           ],
         ),
       ),

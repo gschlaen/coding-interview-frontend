@@ -40,7 +40,7 @@ abstract class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadiusMedium),
         ),
-        padding: EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: 10),
         elevation: 2,
       ),
     ),
