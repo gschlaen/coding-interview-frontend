@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/app_sizes.dart';
+import 'currency_selection_sheet.dart';
 
 class CurrencyDropdown extends StatelessWidget {
   const CurrencyDropdown({
@@ -16,7 +17,7 @@ class CurrencyDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // TODO: show sheet
+        _showCurrencySheet(context);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
@@ -36,6 +37,15 @@ class CurrencyDropdown extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showCurrencySheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return CurrencySelectionSheet();
+      },
     );
   }
 }

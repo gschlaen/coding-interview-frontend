@@ -44,6 +44,12 @@ abstract class AppTheme {
         elevation: 2,
       ),
     ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadiusMedium),
