@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CurrencySwitch extends StatefulWidget {
+import 'exchange_controller.dart';
+
+class CurrencySwitch extends ConsumerStatefulWidget {
   const CurrencySwitch({super.key});
 
   @override
-  State<CurrencySwitch> createState() => _CurrencySwitchState();
+  ConsumerState<CurrencySwitch> createState() => _CurrencySwitchState();
 }
 
-class _CurrencySwitchState extends State<CurrencySwitch>
+class _CurrencySwitchState extends ConsumerState<CurrencySwitch>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -46,7 +49,7 @@ class _CurrencySwitchState extends State<CurrencySwitch>
               _controller.forward();
             }
             _isFlipped = !_isFlipped;
-            // TODO: switch exchange
+            ref.read(exchangeControllerProvider.notifier).swapCurrencies();
           },
           backgroundColor: Theme.of(context).colorScheme.primary,
           elevation: 0,

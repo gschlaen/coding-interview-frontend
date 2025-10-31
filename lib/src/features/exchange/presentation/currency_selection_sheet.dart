@@ -1,7 +1,9 @@
-import 'package:el_dorado_exchange/src/features/exchange/domain/currency.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/app_sizes.dart';
+import '../domain/currency.dart';
+import 'exchange_controller.dart';
 
 class CurrencySelectionSheet extends StatelessWidget {
   const CurrencySelectionSheet({super.key, required this.isFiat});
@@ -14,8 +16,6 @@ class CurrencySelectionSheet extends StatelessWidget {
     final List<Currency> currencies = isFiat
         ? FiatCurrency.values
         : CryptoCurrency.values;
-    // TODO: make selectedCurrencyCode dynamic
-    const String selectedCurrencyId = 'VES';
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
@@ -40,26 +40,38 @@ class CurrencySelectionSheet extends StatelessWidget {
             ),
           ),
           gapH16,
-          // TODO: update items depending on FIAT or cripto
           Expanded(
-            child: RadioGroup<String>(
-              onChanged: (value) {
-                //  TODO: update selected item
+            child: Consumer(
+              builder: (context, ref, child) {
+                final exchangeController = ref.watch(
+                  exchangeControllerProvider,
+                );
+                Currency selectedCurrency = isFiat
+                    ? exchangeController.fiatCurrency
+                    : exchangeController.cryptoCurrency;
+                return RadioGroup<Currency>(
+                  onChanged: (currency) {
+                    ref
+                        .read(exchangeControllerProvider.notifier)
+                        .updateCurrency(currency!);
+                    Navigator.pop(context);
+                  },
+                  groupValue: selectedCurrency,
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => gapH4,
+                    itemCount: currencies.length,
+                    itemBuilder: (context, index) {
+                      final currency = currencies[index];
+                      final bool isSelected = currency == selectedCurrency;
+
+                      return _CurrencyItem(
+                        currency: currency,
+                        isSelected: isSelected,
+                      );
+                    },
+                  ),
+                );
               },
-              groupValue: selectedCurrencyId,
-              child: ListView.separated(
-                separatorBuilder: (context, index) => gapH4,
-                itemCount: currencies.length,
-                itemBuilder: (context, index) {
-                  final currency = currencies[index];
-                  final id = currency.id;
-                  final bool isSelected = id == selectedCurrencyId;
-                  return _CurrencyItem(
-                    currency: currency,
-                    isSelected: isSelected,
-                  );
-                },
-              ),
             ),
           ),
         ],
@@ -68,18 +80,19 @@ class CurrencySelectionSheet extends StatelessWidget {
   }
 }
 
-class _CurrencyItem extends StatelessWidget {
+class _CurrencyItem extends ConsumerWidget {
   const _CurrencyItem({required this.currency, required this.isSelected});
 
   final Currency currency;
   final bool isSelected;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     return InkWell(
       onTap: () {
-        // TODO: update selected item
+        ref.read(exchangeControllerProvider.notifier).updateCurrency(currency);
+        Navigator.pop(context);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -105,7 +118,7 @@ class _CurrencyItem extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            Radio<String>(value: currency.id),
+            Radio<Currency>(value: currency),
           ],
         ),
       ),

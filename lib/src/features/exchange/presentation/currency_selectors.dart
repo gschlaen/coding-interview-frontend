@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/currency.dart';
+import '../domain/exchange_state.dart';
 import 'currency_dropdown.dart';
 import 'currency_selector_label.dart';
 import 'currency_switch.dart';
+import 'exchange_controller.dart';
 
 class CurrencySelectors extends StatelessWidget {
   const CurrencySelectors({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO:
-    final fromCurrency = CryptoCurrency.usdt;
-    final toCurrency = FiatCurrency.cop;
-
     return Stack(
       alignment: Alignment.center,
       clipBehavior: Clip.none,
@@ -27,12 +26,23 @@ class CurrencySelectors extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(32),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CurrencyDropdown(currency: fromCurrency),
-              CurrencyDropdown(currency: toCurrency),
-            ],
+          child: Consumer(
+            builder: (context, ref, child) {
+              final exchangeState = ref.watch(exchangeControllerProvider);
+              final (
+                Currency fromCurrency,
+                Currency toCurrency,
+              ) = exchangeState.exchangeType == ExchangeType.fiatToCrypto
+                  ? (exchangeState.fiatCurrency, exchangeState.cryptoCurrency)
+                  : (exchangeState.cryptoCurrency, exchangeState.fiatCurrency);
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CurrencyDropdown(currency: fromCurrency),
+                  CurrencyDropdown(currency: toCurrency),
+                ],
+              );
+            },
           ),
         ),
         _LeftLabel(),
