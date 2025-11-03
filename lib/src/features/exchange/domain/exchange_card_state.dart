@@ -1,9 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:el_dorado_exchange/src/features/exchange/domain/currency.dart';
 
-enum ExchangeType { fiatToCrypto, cryptoToFiat }
+/// The type of exchange.
+enum ExchangeType {
+  /// Fiat to crypto.
+  fiatToCrypto,
 
+  /// Crypto to fiat.
+  cryptoToFiat
+}
+
+/// The state of the exchange card.
 class ExchangeCardState {
+  /// Creates an [ExchangeCardState].
   const ExchangeCardState({
     required this.fiatCurrency,
     required this.cryptoCurrency,
@@ -11,11 +20,19 @@ class ExchangeCardState {
     required this.exchangeType,
   });
 
+  /// The selected fiat currency.
   final FiatCurrency fiatCurrency;
+
+  /// The selected crypto currency.
   final CryptoCurrency cryptoCurrency;
+
+  /// The amount to exchange.
   final String amountText;
+
+  /// The type of exchange.
   final ExchangeType exchangeType;
 
+  /// The initial state of the exchange card.
   factory ExchangeCardState.initial() {
     return const ExchangeCardState(
       fiatCurrency: FiatCurrency.brl,
@@ -25,6 +42,7 @@ class ExchangeCardState {
     );
   }
 
+  /// Creates a copy of the state with the given fields replaced with the new values.
   ExchangeCardState copyWith({
     FiatCurrency? fiatCurrency,
     CryptoCurrency? cryptoCurrency,

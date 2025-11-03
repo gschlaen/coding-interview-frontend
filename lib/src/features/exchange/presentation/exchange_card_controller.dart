@@ -7,6 +7,7 @@ import '../data/quote_repository.dart';
 import '../domain/currency.dart';
 import '../domain/exchange_card_state.dart';
 
+/// The controller for the exchange card.
 class ExchangeCardController extends Notifier<ExchangeCardState> {
   /// Used to debounce the input queries
   Timer? _debounceTimer;
@@ -20,6 +21,7 @@ class ExchangeCardController extends Notifier<ExchangeCardState> {
     return ExchangeCardState.initial();
   }
 
+  /// Swaps the currencies.
   void swapCurrencies() {
     // Cancel the timer if it is active
     if (_debounceTimer != null) {
@@ -35,6 +37,7 @@ class ExchangeCardController extends Notifier<ExchangeCardState> {
     });
   }
 
+  /// Updates the currency.
   void updateCurrency(Currency currency) {
     // Cancel the timer if it is active
     if (_debounceTimer != null) {
@@ -50,6 +53,7 @@ class ExchangeCardController extends Notifier<ExchangeCardState> {
     });
   }
 
+  /// Updates the amount.
   void updateAmount(String newAmount) {
     // Cancel the timer if it is active
     if (_debounceTimer != null) {
@@ -62,11 +66,13 @@ class ExchangeCardController extends Notifier<ExchangeCardState> {
   }
 }
 
+/// Provides an instance of [ExchangeCardController].
 final exchangeCardControllerProvider =
     NotifierProvider<ExchangeCardController, ExchangeCardState>(
       ExchangeCardController.new,
     );
 
+/// Provides the result of the recommendations query.
 final recommendationsResultProvider = FutureProvider((ref) async {
   final state = ref.watch(exchangeCardControllerProvider);
   final type = state.exchangeType == ExchangeType.fiatToCrypto ? 1 : 0;
