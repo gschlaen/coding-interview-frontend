@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common_widgets/primary_button.dart';
 import '../../../Theme/app_theme.dart';
 import '../../../constants/app_sizes.dart';
 import 'ammount_input.dart';
 import 'currency_selectors.dart';
-import 'summary_section.dart';
+import 'exchange_card_controller.dart';
+import 'quote_info_section.dart';
 
 class ExchangeCard extends StatelessWidget {
   const ExchangeCard({super.key});
@@ -35,12 +37,21 @@ class ExchangeCard extends StatelessWidget {
           gapH16,
           const AmountInput(),
           gapH32,
-          const SummarySection(),
+          const QuoteInfoSection(),
           gapH32,
-          PrimaryButton(
-            text: 'Cambiar',
-            onPressed: () {
-              // Do nothing
+          Consumer(
+            builder: (context, ref, child) {
+              final asyncResult = ref.watch(recommendationsResultProvider);
+
+              return PrimaryButton(
+                text: 'Cambiar',
+                onPressed:
+                    asyncResult.isLoading ||
+                        asyncResult.value == null ||
+                        asyncResult.hasError
+                    ? null
+                    : () {},
+              );
             },
           ),
         ],

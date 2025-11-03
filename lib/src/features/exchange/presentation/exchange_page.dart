@@ -8,12 +8,16 @@ class ExchangePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Stack(
-        children: [
-          BackgroundView(),
-          Center(child: ExchangeCard()),
-        ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: const Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            BackgroundView(),
+            Center(child: ExchangeCard()),
+          ],
+        ),
       ),
     );
   }

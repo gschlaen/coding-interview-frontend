@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/app_sizes.dart';
 import '../domain/currency.dart';
-import 'exchange_controller.dart';
+import 'exchange_card_controller.dart';
 
 class CurrencySelectionSheet extends StatelessWidget {
   const CurrencySelectionSheet({super.key, required this.isFiat});
@@ -44,7 +44,7 @@ class CurrencySelectionSheet extends StatelessWidget {
             child: Consumer(
               builder: (context, ref, child) {
                 final exchangeController = ref.watch(
-                  exchangeControllerProvider,
+                  exchangeCardControllerProvider,
                 );
                 Currency selectedCurrency = isFiat
                     ? exchangeController.fiatCurrency
@@ -52,7 +52,7 @@ class CurrencySelectionSheet extends StatelessWidget {
                 return RadioGroup<Currency>(
                   onChanged: (currency) {
                     ref
-                        .read(exchangeControllerProvider.notifier)
+                        .read(exchangeCardControllerProvider.notifier)
                         .updateCurrency(currency!);
                     Navigator.pop(context);
                   },
@@ -91,7 +91,9 @@ class _CurrencyItem extends ConsumerWidget {
     final theme = Theme.of(context);
     return InkWell(
       onTap: () {
-        ref.read(exchangeControllerProvider.notifier).updateCurrency(currency);
+        ref
+            .read(exchangeCardControllerProvider.notifier)
+            .updateCurrency(currency);
         Navigator.pop(context);
       },
       child: Padding(

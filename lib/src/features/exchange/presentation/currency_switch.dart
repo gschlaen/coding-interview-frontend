@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'exchange_controller.dart';
+import 'exchange_card_controller.dart';
 
 class CurrencySwitch extends ConsumerStatefulWidget {
   const CurrencySwitch({super.key});
@@ -49,7 +49,7 @@ class _CurrencySwitchState extends ConsumerState<CurrencySwitch>
               _controller.forward();
             }
             _isFlipped = !_isFlipped;
-            ref.read(exchangeControllerProvider.notifier).swapCurrencies();
+            ref.read(exchangeCardControllerProvider.notifier).swapCurrencies();
           },
           backgroundColor: Theme.of(context).colorScheme.primary,
           elevation: 0,

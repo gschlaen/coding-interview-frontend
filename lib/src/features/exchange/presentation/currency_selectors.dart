@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/currency.dart';
-import '../domain/exchange_state.dart';
+import '../domain/exchange_card_state.dart';
 import 'currency_dropdown.dart';
 import 'currency_selector_label.dart';
 import 'currency_switch.dart';
-import 'exchange_controller.dart';
+import 'exchange_card_controller.dart';
 
 class CurrencySelectors extends StatelessWidget {
   const CurrencySelectors({super.key});
@@ -28,7 +28,7 @@ class CurrencySelectors extends StatelessWidget {
           ),
           child: Consumer(
             builder: (context, ref, child) {
-              final exchangeState = ref.watch(exchangeControllerProvider);
+              final exchangeState = ref.watch(exchangeCardControllerProvider);
               final (
                 Currency fromCurrency,
                 Currency toCurrency,

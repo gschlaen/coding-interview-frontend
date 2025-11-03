@@ -5,7 +5,14 @@ import 'src/Theme/app_theme.dart';
 import 'src/features/exchange/presentation/exchange_page.dart';
 
 void main() {
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(
+    ProviderScope(
+      retry: (_, __) {
+        return null;
+      },
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

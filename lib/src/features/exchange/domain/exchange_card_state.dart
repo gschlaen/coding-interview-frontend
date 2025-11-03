@@ -3,8 +3,8 @@ import 'package:el_dorado_exchange/src/features/exchange/domain/currency.dart';
 
 enum ExchangeType { fiatToCrypto, cryptoToFiat }
 
-class ExchangeState {
-  const ExchangeState({
+class ExchangeCardState {
+  const ExchangeCardState({
     required this.fiatCurrency,
     required this.cryptoCurrency,
     required this.amountText,
@@ -16,8 +16,8 @@ class ExchangeState {
   final String amountText;
   final ExchangeType exchangeType;
 
-  factory ExchangeState.initial() {
-    return const ExchangeState(
+  factory ExchangeCardState.initial() {
+    return const ExchangeCardState(
       fiatCurrency: FiatCurrency.brl,
       cryptoCurrency: CryptoCurrency.usdt,
       exchangeType: ExchangeType.fiatToCrypto,
@@ -25,13 +25,13 @@ class ExchangeState {
     );
   }
 
-  ExchangeState copyWith({
+  ExchangeCardState copyWith({
     FiatCurrency? fiatCurrency,
     CryptoCurrency? cryptoCurrency,
     String? amountText,
     ExchangeType? exchangeType,
   }) {
-    return ExchangeState(
+    return ExchangeCardState(
       fiatCurrency: fiatCurrency ?? this.fiatCurrency,
       cryptoCurrency: cryptoCurrency ?? this.cryptoCurrency,
       amountText: amountText ?? this.amountText,
@@ -40,7 +40,7 @@ class ExchangeState {
   }
 
   @override
-  bool operator ==(covariant ExchangeState other) {
+  bool operator ==(covariant ExchangeCardState other) {
     if (identical(this, other)) return true;
 
     return other.fiatCurrency == fiatCurrency &&

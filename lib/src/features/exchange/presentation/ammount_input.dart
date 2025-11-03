@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/currency.dart';
-import '../domain/exchange_state.dart';
-import 'exchange_controller.dart';
+import '../domain/exchange_card_state.dart';
+import 'exchange_card_controller.dart';
 
 class AmountInput extends ConsumerWidget {
   const AmountInput({super.key});
@@ -25,7 +25,7 @@ class AmountInput extends ConsumerWidget {
           padding: const EdgeInsets.only(left: 12),
           child: Consumer(
             builder: (context, ref, child) {
-              final exchangeState = ref.watch(exchangeControllerProvider);
+              final exchangeState = ref.watch(exchangeCardControllerProvider);
               final Currency fromCurrency =
                   exchangeState.exchangeType == ExchangeType.fiatToCrypto
                   ? exchangeState.fiatCurrency
@@ -45,7 +45,7 @@ class AmountInput extends ConsumerWidget {
       ),
       style: Theme.of(context).textTheme.bodyLarge,
       onChanged: (value) {
-        ref.read(exchangeControllerProvider.notifier).updateAmount(value);
+        ref.read(exchangeCardControllerProvider.notifier).updateAmount(value);
       },
     );
   }
